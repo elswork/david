@@ -10,7 +10,8 @@
 [![Licencia](https://img.shields.io/badge/Licencia-AGPL_v3-blue.svg)](LICENSE)
 [![Framework: Flutter](https://img.shields.io/badge/Framework-Flutter-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
 [![Backend: Firebase](https://img.shields.io/badge/Backend-Firebase-FFCA28?logo=firebase&logoColor=black)](https://firebase.google.com)
-[![Arquitectura: Modular](https://img.shields.io/badge/Arquitectura-Modular_Evolutiva-success.svg)]()
+[![Arquitectura: Microkernel](https://img.shields.io/badge/Arquitectura-Microkernel_%22Everything_is_a_Plugin%22-success.svg)]()
+[![Patrón: Cordis / Harness](https://img.shields.io/badge/Patr%C3%B3n-Cordis_%2F_Harness_Inspired-purple.svg)]()
 
 ---
 
@@ -50,34 +51,36 @@ Quiero que quien clone este repositorio o decida colaborar entienda perfectament
 
 ---
 
-## 🧩 Concepción del Ecosistema
+## 🧩 Arquitectura Microkernel: "Todo es un Plugin"
 
-David se articula en dos capas claramente diferenciadas:
+Inspirado en el diseño de microkernel de frameworks agénticos de última generación como **DeepSeek Harness** y el sistema **Cordis**, Proyecto David adopta un principio fundamental: **"Everything is a Plugin" (Todo es un Plugin)**.
+
+David no es una aplicación monolítica con pantallas acopladas; es un **Kernel extensible** que orquesta plugins independientes, altamente cohesivos y desacoplados:
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                       DAVID CORE                            │
-│  - Autenticación & Seguridad (Firebase Auth / Rules)         │
-│  - Bus de Estado y Persistencia Reactiva (Firestore)        │
-│  - Registro & Inyección Dinámica de Módulos                 │
-│  - Sistema de Navegación, Temas y UI Base (Flutter)         │
-└──────────────┬──────────────────────────────┬───────────────┘
-               │                              │
-    ┌──────────┴──────────┐        ┌──────────┴──────────┐
-    ▼                     ▼        ▼                     ▼
-┌──────────────┐   ┌──────────────┐ ┌──────────────┐   ┌──────────────┐
-│  MÓDULO A    │   │  MÓDULO B    │ │  MÓDULO C    │   │  MÓDULO ...  │
-│ (Necesidad 1)│   │ (Necesidad 2)│ │ (Necesidad 3)│   │  (Bajo Dem.) │
-└──────────────┘   └──────────────┘ └──────────────┘   └──────────────┘
+                              ┌────────────────────────────────────────┐
+                              │           DAVID MICROKERNEL            │
+                              │             (DavidContext)             │
+                              │  - Bus de Servicios (provide/inject)   │
+                              │  - Ciclo de Vida (load/ready/destroy)  │
+                              │  - Enrutador y Shell UI Unificado      │
+                              └───────────────────┬────────────────────┘
+                                                  │
+         ┌───────────────────────┬────────────────┼───────────────────────┬───────────────────────┐
+         ▼                       ▼                ▼                       ▼                       ▼
+  ┌──────────────┐        ┌──────────────┐ ┌──────────────┐        ┌──────────────┐        ┌──────────────┐
+  │ Core Plugins │        │ Negocio      │ │ Negocio      │        │ Hardware     │        │ AI Copilot   │
+  │ - Firebase   │        │ - Pedidos    │ │ - Catálogo   │        │ - Impresoras │        │ - Agent      │
+  │ - Auth       │        │ - Rutas      │ │ - Clientes   │        │   ESC/POS    │        │   Harness    │
+  │ - Theme      │        │ - Cobros     │ │ - Stock      │        │ - Lectores 2D│        │   (Skills)   │
+  └──────────────┘        └──────────────┘ └──────────────┘        └──────────────┘        └──────────────┘
 ```
 
-1. **El Núcleo (Core):**
-   - Garantiza la identidad del usuario, los permisos, la conectividad y el ciclo de vida de la aplicación.
-   - Proporciona un contrato estándar para que los módulos se conecten, compartan datos y se presenten en la interfaz sin acoplamiento estrecho.
-
-2. **Los Módulos de Negocio (Bajo Demanda):**
-   - Cada módulo responde a una necesidad concreta manifestada por el negocio en un momento dado (por ejemplo: gestión de artículos, cartera de contactos, toma rápida de pedidos, control de cobros, reportes o inventario).
-   - Se conciben como piezas independientes: pueden activarse, desactivarse, ampliarse o reescribirse sin afectar al resto del sistema.
+### Los 4 Pilares del Modelo Microkernel:
+1. **El Núcleo Mínimo (`DavidContext`):** No contiene lógica de negocio ni vistas específicas. Su única misión es gestionar el registro de plugins, resolver dependencias entre ellos mediante inyección (`ctx.provide` / `ctx.inject`) y ofrecer el contenedor de navegación.
+2. **Servicios de Infraestructura como Plugins Intercambiables:** La base de datos no está soldada al código. `FirestorePlugin` provee el servicio de almacenamiento con persistencia offline. Si en el futuro un entorno requiere `SqlitePlugin` o `SupabasePlugin`, se reemplaza el complemento sin tocar ni una sola línea de los módulos de negocio.
+3. **Módulos de Negocio Autocontenidos:** Cada necesidad (pedidos rápidos, cobros, albaranes, stock en furgoneta) se añade como un plugin independiente. Si un comercio no necesita repartos, simplemente no activa el plugin de rutas.
+4. **Capa Agéntica Nativa (AI Agent Harness Ready):** Cada plugin de negocio no solo expone vistas para humanos, sino también **Herramientas y Habilidades (*Skills/Tools*)** tipadas. Esto permite que un agente de IA autónomo (integrado mediante arneses como DeepSeek Harness) pueda interactuar de forma nativa con el estado del negocio: sugerir pedidos, auditar inventario o alertar sobre riesgos en lenguaje natural.
 
 ---
 
@@ -93,49 +96,87 @@ David se articula en dos capas claramente diferenciadas:
 
 David está en su fase de génesis. Si te atrae la idea de construir una plataforma de gestión modular moderna, libre y pensada para durar décadas:
 
-- **Aporta al Núcleo:** Ayuda a definir la arquitectura base de carga de módulos y la gestión de estado reactivo con Flutter + Firebase.
-- **Propón o Desarrolla un Módulo:** ¿Tu negocio necesita una funcionalidad específica? Constrúyela como un módulo de David y compártela con la comunidad.
+- **Aporta al Núcleo:** Ayuda a definir el microkernel y la gestión de ciclo de vida con Flutter + Firebase.
+- **Desarrolla un Plugin:** ¿Tu negocio necesita una funcionalidad concreta? Constrúyela como un `DavidPlugin` y compártela con la comunidad.
 - **Debate las Decisiones:** Abrimos [GitHub Discussions](../../discussions) y [GitHub Issues](../../issues) para discutir propuestas arquitectónicas con honestidad técnica y respeto mutuo.
 
 ---
 
 ## 🚀 Prompt Génesis de Desarrollo (Instrucciones para Agentes y Desarrolladores)
 
-Para asegurar que cualquier desarrollador o agente de IA inicialice y extienda el código de **David** bajo los más altos estándares de la industria y la arquitectura más robusta posible, se establece el siguiente **Prompt Maestro de Desarrollo**:
+Para asegurar que cualquier desarrollador o agente de IA inicialice y extienda el código de **David** bajo los más altos estándares de la industria y la arquitectura de microkernel más robusta posible, se establece el siguiente **Prompt Maestro de Desarrollo**:
 
 ````markdown
 # SYSTEM PROMPT: INGENIERO PRINCIPAL - PROYECTO DAVID
 
-Actúa como un **Ingeniero de Software Principal y Arquitecto de Soluciones Senior** con más de 15 años de experiencia liderando proyectos de producción crítica con **Flutter** y **Firebase**.
+Actúa como un **Ingeniero de Software Principal y Arquitecto de Soluciones Senior** con más de 15 años de experiencia liderando proyectos de producción crítica con **Flutter** y **Firebase**, experto en arquitecturas **Microkernel ("Everything is a Plugin")**.
 
-Tu misión es inicializar y desarrollar el código de **Proyecto David**, un ecosistema modular de gestión empresarial abierto, reactivo y vivo. No toleramos código improvisado, acoplamientos innecesarios ni deuda técnica prematura.
+Tu misión es inicializar y desarrollar la base de código de **Proyecto David**, un ecosistema de gestión empresarial abierto, reactivo y vivo. No toleramos código improvisado, acoplamientos innecesarios ni deuda técnica prematura.
 
 ---
 
-### 🏛️ 1. Arquitectura de Referencia: Feature-First Clean Architecture
+### 🏛️ 1. Arquitectura de Referencia: Microkernel ("Everything is a Plugin")
 
-La base de código se divide estrictamente en dos niveles: `core/` y `modules/`.
+El sistema se estructura en un núcleo orquestador mínimo (`kernel/`) y complementos desacoplados (`plugins/`):
 
 ```
 lib/
-├── core/                       # Infraestructura transversal
-│   ├── auth/                   # Autenticación y control de sesión (Firebase Auth)
-│   ├── database/               # Configuración Firestore, persistencia offline y converters
-│   ├── router/                 # Enrutamiento central y agregador de rutas modulares
-│   ├── theme/                  # Sistema de diseño, tokens y temas
-│   ├── modules/                # Interfaz 'DavidModule' y registro dinámico de módulos
-│   └── utils/                  # Extensiones, validadores y manejo funcional de errores
-├── modules/                    # Módulos de negocio desacoplados e independientes
-│   └── [nombre_modulo]/        # Cada módulo es autocontenido:
-│       ├── domain/             # Entidades inmutables y contratos abstractos (Puro Dart)
-│       ├── data/               # Modelos Firestore (.fromFirestore/.toFirestore) y repositorios
-│       └── presentation/       # UI (Widgets atómicos), pantallas y controladores de estado
-└── main.dart                   # Inicialización de Firebase, registro de módulos y runApp()
+├── kernel/                         # Microkernel (Contexto y Bus de Servicios)
+│   ├── david_context.dart          # Contenedor de inyección (provide / inject)
+│   ├── david_plugin.dart           # Contrato e interfaz base de todo Plugin
+│   ├── plugin_registry.dart        # Gestor del ciclo de vida (load, ready, destroy)
+│   └── app_shell.dart              # Shell de navegación agregada y temas
+│
+├── plugins/                        # Todo en David es un Plugin
+│   ├── core/                       # Plugins de Sistema e Infraestructura
+│   │   ├── auth/                   # FirebaseAuthPlugin (implementa AuthService)
+│   │   └── database/               # FirestorePlugin (implementa DatabaseService con cache offline)
+│   │
+│   ├── business/                   # Plugins de Negocio (Clean Architecture interna)
+│   │   ├── orders/                 # Plugin de toma de pedidos
+│   │   │   ├── domain/             # Entidades y contratos abstractos (Puro Dart)
+│   │   │   ├── data/               # Modelos Firestore tipados (.withConverter)
+│   │   │   └── presentation/       # Vistas Flutter y Notifiers Riverpod
+│   │   └── [nuevo_plugin]/         # Nuevos módulos bajo demanda
+│   │
+│   ├── hardware/                   # Plugins de Periféricos (Impresión ESC/POS, escáneres)
+│   └── ai/                         # Plugins de IA (Agente Copiloto / Tools para Agent Harness)
+│
+└── main.dart                       # Inicialización del Kernel, carga de plugins y runApp()
 ```
 
 ---
 
-### ⚙️ 2. Reglas Técnicas y Mejores Prácticas Obligatorias
+### ⚙️ 2. Contrato Obligatorio del Plugin (`DavidPlugin`)
+
+Todo módulo debe implementar el ciclo de vida del microkernel:
+
+```dart
+abstract class DavidPlugin {
+  String get id;
+  String get name;
+  List<Type> get dependencies => [];
+
+  /// Fase 1: Registro de servicios en el contexto (ctx.provide<T>())
+  Future<void> onLoad(DavidContext ctx) async {}
+
+  /// Fase 2: Servicios de terceros listos; suscripción a eventos y rutas UI
+  Future<void> onReady(DavidContext ctx) async {}
+
+  /// Fase 3: Liberación de recursos
+  Future<void> onDestroy(DavidContext ctx) async {}
+
+  /// Rutas de navegación expuestas por el plugin al Shell central
+  List<RouteBase> get routes => [];
+
+  /// Herramientas/Skills expuestas a agentes de IA (Agent Harness)
+  List<AgentTool> get agentTools => [];
+}
+```
+
+---
+
+### ⚙️ 3. Reglas Técnicas y Mejores Prácticas Obligatorias
 
 1. **Gestión de Estado Reactiva:**
    - Utiliza exclusivamente **Riverpod 2.x** (`Notifier` / `AsyncNotifier`).
@@ -147,18 +188,8 @@ lib/
    - Obligatorio: Emplea siempre `withConverter<T>` en cada colección y documento para garantizar tipado estricto en tiempo de compilación.
    - Trata la red como intermitente: el flujo de datos debe responder reactivamente desde la caché local y sincronizar en segundo plano.
 
-3. **Contrato de Módulo (Plugin Core Pattern):**
-   - Cada módulo debe implementar la interfaz abstracta `DavidModule`:
-     ```dart
-     abstract class DavidModule {
-       String get moduleId;
-       String get moduleName;
-       IconData get moduleIcon;
-       List<RouteBase> get routes;
-       Future<void> initialize();
-     }
-     ```
-   - El `core` registra los módulos disponibles sin acoplarse a sus implementaciones concretas.
+3. **Inyección y Comunicación entre Plugins:**
+   - Los plugins se comunican mediante contratos abstractos registrados en el `DavidContext` (`ctx.inject<DatabaseService>()`), nunca mediante importaciones directas de implementaciones concretas.
 
 4. **Calidad de Código y Tipado Estricto:**
    - Código Dart 3 moderno: usa records, pattern matching y clases inmutables.
@@ -168,10 +199,9 @@ lib/
 
 ---
 
-### 🧪 3. Estrategia de Testing y Calidad
-- Cada caso de uso del dominio debe contar con pruebas unitarias (`test`).
-- Los repositorios deben probarse con mocks de las fuentes de datos.
-- Los widgets de presentación deben ser testeables sin necesidad de emulador físico (`testWidgets`).
+### 🧪 4. Estrategia de Testing y Calidad
+- Cada plugin debe contar con tests unitarios para su capa de dominio y tests de integración con un mock de `DavidContext`.
+- Las vistas de presentación deben ser testeables sin necesidad de emulador físico (`testWidgets`).
 
 Genera siempre código limpio, autodocumentado en español, listo para producción y estructurado para ser leído y ampliado por una comunidad global.
 ````
