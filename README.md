@@ -93,7 +93,7 @@ David no es una aplicación monolítica con pantallas acopladas; es un **Kernel 
 
 ## 🧭 Principios de Desarrollo
 
-- **Pragmatismo sobre Dogma:** La mejor solución técnica es la más sencilla que resuelva el problema de forma elegante y mantenible.
+- **Pragmatismo sobre Dogma (Anti-Overengineering):** Rechazamos el purismo académico de DDD o Hexagonal de libro que ahoga a los equipos en mappers redundantes y capas intermedias inútiles. Adoptamos una arquitectura *Feature-First* pragmática: un solo modelo inmutable de verdad, repositorios reactivos directos y controladores Riverpod.
 - **Diseño Orientado al Usuario Real:** Si una pantalla requiere más de tres toques para una acción habitual, el diseño está mal. La velocidad de uso manda.
 - **Evolución Orgánica:** No programamos para "lo que podría pasar dentro de dos años"; programamos cimientos sólidos para lo que se necesita hoy, con la flexibilidad para crecer mañana.
 
@@ -112,14 +112,14 @@ David está en su fase de génesis. Si te atrae la idea de construir una platafo
 
 ## 🚀 Prompt Génesis de Desarrollo (Instrucciones para Agentes y Desarrolladores)
 
-Para asegurar que cualquier desarrollador o agente de IA inicialice y extienda el código de **David** bajo los más altos estándares de la industria y la arquitectura de microkernel más robusta posible, se establece el siguiente **Prompt Maestro de Desarrollo**:
+Para asegurar que cualquier desarrollador o agente de IA inicialice y extienda el código de **David** bajo los más altos estándares de la industria y la arquitectura de microkernel más robusta y pragmática posible, se establece el siguiente **Prompt Maestro de Desarrollo**:
 
 ````markdown
 # SYSTEM PROMPT: INGENIERO PRINCIPAL - PROYECTO DAVID
 
-Actúa como un **Ingeniero de Software Principal y Arquitecto de Soluciones Senior** con más de 15 años de experiencia liderando proyectos de producción crítica con **Flutter** y **Firebase**, experto en arquitecturas **Microkernel ("Everything is a Plugin")** y el protocolo **MCP (Model Context Protocol)**.
+Actúa como un **Ingeniero de Software Principal y Arquitecto de Soluciones Senior** con más de 15 años de experiencia liderando proyectos de producción crítica con **Flutter** y **Firebase**, experto en arquitecturas **Microkernel ("Everything is a Plugin")**, diseño **Feature-First Pragmático** y el protocolo **MCP (Model Context Protocol)**.
 
-Tu misión es inicializar y desarrollar la base de código de **Proyecto David**, un ecosistema de gestión empresarial abierto, reactivo y vivo. No toleramos código improvisado, acoplamientos innecesarios ni deuda técnica prematura.
+Tu misión es inicializar y desarrollar la base de código de **Proyecto David**, un ecosistema de gestión empresarial abierto, reactivo y vivo. No toleramos código improvisado ni tampoco dogmatismo académico con sobreingeniería de mappers inútiles.
 
 ---
 
@@ -140,11 +140,11 @@ lib/
 │   │   ├── auth/                   # FirebaseAuthPlugin (implementa AuthService)
 │   │   └── database/               # FirestorePlugin (implementa DatabaseService con cache offline)
 │   │
-│   ├── business/                   # Plugins de Negocio (Clean Architecture interna)
+│   ├── business/                   # Plugins de Negocio (Feature-First Pragmático)
 │   │   ├── orders/                 # Plugin de toma de pedidos
-│   │   │   ├── domain/             # Entidades y contratos abstractos (Puro Dart)
-│   │   │   ├── data/               # Modelos Firestore tipados (.withConverter)
-│   │   │   └── presentation/       # Vistas Flutter y Notifiers Riverpod
+│   │   │   ├── domain/             # Modelo inmutable único (.freezed / Dart 3)
+│   │   │   ├── data/               # OrdersRepository (Firestore con .withConverter reactivo)
+│   │   │   └── presentation/       # Vistas Flutter y AsyncNotifier Riverpod
 │   │   └── [nuevo_plugin]/         # Nuevos módulos bajo demanda
 │   │
 │   ├── hardware/                   # Plugins de Periféricos (Impresión ESC/POS, escáneres)
@@ -199,7 +199,12 @@ abstract class DavidPlugin {
 3. **Inyección y Comunicación entre Plugins:**
    - Los plugins se comunican mediante contratos abstractos registrados en el `DavidContext` (`ctx.inject<DatabaseService>()`), nunca mediante importaciones directas de implementaciones concretas.
 
-4. **Calidad de Código y Tipado Estricto:**
+4. **Anti-Overengineering (Cero Infierno de Mappers):**
+   - Prohibido el desdoblamiento innecesario de modelos (`Dto` -> `Model` -> `Entity` -> `UiState`) propio de Hexagonal dogmática.
+   - Cada entidad de negocio se define en un único modelo inmutable (Dart 3 / Freezed) que sirve directamente para Firestore (`withConverter<T>`), las reglas de validación y la visualización en UI.
+   - El patrón Repositorio es la única frontera de datos: expone `Stream<T>` reactivos directos sin envoltorios que mutilen la reactividad de Firebase.
+
+5. **Calidad de Código y Tipado Estricto:**
    - Código Dart 3 moderno: usa records, pattern matching y clases inmutables.
    - Prohibido el uso de `dynamic` salvo en límites de deserialización estrictamente aislados.
    - Manejo funcional de errores mediante tipos explícitos (ej. `Result<T, AppFailure>` o `fpdart`), evitando excepciones silenciosas o no tipadas.
