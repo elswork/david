@@ -12,6 +12,7 @@
 [![Backend: Firebase](https://img.shields.io/badge/Backend-Firebase-FFCA28?logo=firebase&logoColor=black)](https://firebase.google.com)
 [![Arquitectura: Microkernel](https://img.shields.io/badge/Arquitectura-Microkernel_%22Everything_is_a_Plugin%22-success.svg)]()
 [![Patrón: Cordis / Harness](https://img.shields.io/badge/Patr%C3%B3n-Cordis_%2F_Harness_Inspired-purple.svg)]()
+[![AI: Model Context Protocol (MCP)](https://img.shields.io/badge/AI-Model_Context_Protocol_(MCP)-8A2BE2.svg)]()
 
 ---
 
@@ -80,7 +81,13 @@ David no es una aplicación monolítica con pantallas acopladas; es un **Kernel 
 1. **El Núcleo Mínimo (`DavidContext`):** No contiene lógica de negocio ni vistas específicas. Su única misión es gestionar el registro de plugins, resolver dependencias entre ellos mediante inyección (`ctx.provide` / `ctx.inject`) y ofrecer el contenedor de navegación.
 2. **Servicios de Infraestructura como Plugins Intercambiables:** La base de datos no está soldada al código. `FirestorePlugin` provee el servicio de almacenamiento con persistencia offline. Si en el futuro un entorno requiere `SqlitePlugin` o `SupabasePlugin`, se reemplaza el complemento sin tocar ni una sola línea de los módulos de negocio.
 3. **Módulos de Negocio Autocontenidos:** Cada necesidad (pedidos rápidos, cobros, albaranes, stock en furgoneta) se añade como un plugin independiente. Si un comercio no necesita repartos, simplemente no activa el plugin de rutas.
-4. **Capa Agéntica Nativa (AI Agent Harness Ready):** Cada plugin de negocio no solo expone vistas para humanos, sino también **Herramientas y Habilidades (*Skills/Tools*)** tipadas. Esto permite que un agente de IA autónomo (integrado mediante arneses como DeepSeek Harness) pueda interactuar de forma nativa con el estado del negocio: sugerir pedidos, auditar inventario o alertar sobre riesgos en lenguaje natural.
+4. **Capa Agéntica Nativa con MCP (Model Context Protocol):**
+   - Cada plugin de negocio no solo expone vistas en Flutter para el operador humano, sino **Herramientas (*Tools*) y Recursos (*Resources*)** formalizados bajo el estándar universal **MCP**.
+   - Proyecto David incorpora un **David MCP Server** (en la capa cloud / Firebase Functions o contenedor Node.js) que conecta agentes autónomos (DeepSeek Harness, Claude, Gemini o modelos locales en Ollama) directamente con la operativa del negocio:
+     * Toma y consulta de pedidos en lenguaje natural (voz, chat, mensajería).
+     * Auditoría y conciliación nocturna automática de albaranes frente a cobros.
+     * Sugerencia predictiva de reposición de stock basada en rotación y estacionalidad.
+   - **Agnosticismo total de IA:** David no depende de ningún LLM cerrado; cualquier cerebro compatible con MCP puede operar como copiloto inteligente sin comprometer la soberanía de los datos.
 
 ---
 
@@ -98,6 +105,7 @@ David está en su fase de génesis. Si te atrae la idea de construir una platafo
 
 - **Aporta al Núcleo:** Ayuda a definir el microkernel y la gestión de ciclo de vida con Flutter + Firebase.
 - **Desarrolla un Plugin:** ¿Tu negocio necesita una funcionalidad concreta? Constrúyela como un `DavidPlugin` y compártela con la comunidad.
+- **Construye Herramientas MCP:** Expón nuevas capacidades agénticas para que los modelos de lenguaje interactúen con el ecosistema.
 - **Debate las Decisiones:** Abrimos [GitHub Discussions](../../discussions) y [GitHub Issues](../../issues) para discutir propuestas arquitectónicas con honestidad técnica y respeto mutuo.
 
 ---
@@ -109,7 +117,7 @@ Para asegurar que cualquier desarrollador o agente de IA inicialice y extienda e
 ````markdown
 # SYSTEM PROMPT: INGENIERO PRINCIPAL - PROYECTO DAVID
 
-Actúa como un **Ingeniero de Software Principal y Arquitecto de Soluciones Senior** con más de 15 años de experiencia liderando proyectos de producción crítica con **Flutter** y **Firebase**, experto en arquitecturas **Microkernel ("Everything is a Plugin")**.
+Actúa como un **Ingeniero de Software Principal y Arquitecto de Soluciones Senior** con más de 15 años de experiencia liderando proyectos de producción crítica con **Flutter** y **Firebase**, experto en arquitecturas **Microkernel ("Everything is a Plugin")** y el protocolo **MCP (Model Context Protocol)**.
 
 Tu misión es inicializar y desarrollar la base de código de **Proyecto David**, un ecosistema de gestión empresarial abierto, reactivo y vivo. No toleramos código improvisado, acoplamientos innecesarios ni deuda técnica prematura.
 
@@ -140,7 +148,7 @@ lib/
 │   │   └── [nuevo_plugin]/         # Nuevos módulos bajo demanda
 │   │
 │   ├── hardware/                   # Plugins de Periféricos (Impresión ESC/POS, escáneres)
-│   └── ai/                         # Plugins de IA (Agente Copiloto / Tools para Agent Harness)
+│   └── ai/                         # Plugins de IA (David MCP Server / Tools para Agent Harness)
 │
 └── main.dart                       # Inicialización del Kernel, carga de plugins y runApp()
 ```
@@ -149,7 +157,7 @@ lib/
 
 ### ⚙️ 2. Contrato Obligatorio del Plugin (`DavidPlugin`)
 
-Todo módulo debe implementar el ciclo de vida del microkernel:
+Todo módulo debe implementar el ciclo de vida del microkernel y exponer sus capacidades tanto a humanos como a agentes:
 
 ```dart
 abstract class DavidPlugin {
@@ -169,8 +177,8 @@ abstract class DavidPlugin {
   /// Rutas de navegación expuestas por el plugin al Shell central
   List<RouteBase> get routes => [];
 
-  /// Herramientas/Skills expuestas a agentes de IA (Agent Harness)
-  List<AgentTool> get agentTools => [];
+  /// Herramientas y Recursos expuestos al protocolo MCP (Model Context Protocol)
+  List<McpToolDefinition> get mcpTools => [];
 }
 ```
 
