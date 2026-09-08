@@ -60,6 +60,68 @@
 }
 
 /* --------------------------------------------------------------------------
+   BARRA DE PROGRESO DE SCROLL ARQUITECTÓNICA
+   -------------------------------------------------------------------------- */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-light));
+  z-index: 1000;
+  pointer-events: none;
+  transition: width 50ms linear;
+  box-shadow: 0 0 8px rgba(229, 169, 60, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   EFECTO SPOTLIGHT INTERACTIVO (LUZ TÁCTIL GUIADA POR CURSOR)
+   -------------------------------------------------------------------------- */
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    500px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
+    rgba(229, 169, 60, 0.12),
+    transparent 50%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+.spotlight-card:hover::before {
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   ANIMACIONES DE REVELACIÓN POR SCROLL (INTERSECTION OBSERVER)
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
    2. RESET Y BASES GLOBALES
    -------------------------------------------------------------------------- */
 *, *::before, *::after {
@@ -452,9 +514,10 @@ code, pre, kbd {
   border-color: var(--accent-gold);
 }
 
-/* Envoltorio Visual del Banner */
+/* Envoltorio Visual del Banner con Perspectiva 3D */
 .hero-visual {
   position: relative;
+  perspective: 1200px;
 }
 
 .banner-frame {
@@ -464,25 +527,29 @@ code, pre, kbd {
   border: 1px solid var(--border-medium);
   background: var(--bg-surface);
   box-shadow: var(--shadow-elevated);
-  transition: border-color var(--transition-smooth);
+  transform-style: preserve-3d;
+  transition: border-color var(--transition-smooth), transform 0.15s ease-out, box-shadow var(--transition-smooth);
+  will-change: transform;
 }
 
 .banner-frame:hover {
   border-color: var(--border-gold);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(229, 169, 60, 0.2);
 }
 
 .banner-frame img {
   width: 100%;
   height: auto;
   object-fit: cover;
+  transform: translateZ(10px);
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .banner-frame:hover img {
-  transform: scale(1.02);
+  transform: translateZ(18px) scale(1.02);
 }
 
-/* Coordenadas y Metadatos de la Galería */
+/* Coordenadas y Metadatos de la Galería Flotantes en 3D */
 .frame-telemetry {
   position: absolute;
   top: 14px;
@@ -492,6 +559,7 @@ code, pre, kbd {
   justify-content: space-between;
   align-items: center;
   pointer-events: none;
+  transform: translateZ(28px);
 }
 
 .telemetry-chip {
@@ -505,6 +573,7 @@ code, pre, kbd {
   border: 1px solid rgba(255, 255, 255, 0.12);
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .frame-footer {

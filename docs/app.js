@@ -4,11 +4,15 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  initScrollProgress();
   initMicrokernelExplorer();
   initMcpTerminal();
   initCodeTabs();
   initCopyButtons();
   initMobileNav();
+  initSpotlightCards();
+  initParallaxAndTilt();
+  initScrollReveal();
 });
 
 /* --------------------------------------------------------------------------
@@ -345,4 +349,130 @@ function initMobileNav() {
       }
     });
   });
+}
+
+/* --------------------------------------------------------------------------
+   6. BARRA DE PROGRESO DE SCROLL ARQUITECTÓNICA
+   -------------------------------------------------------------------------- */
+function initScrollProgress() {
+  const progressBar = document.createElement('div');
+  progressBar.className = 'scroll-progress-bar';
+  document.body.prepend(progressBar);
+
+  window.addEventListener('scroll', () => {
+    const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
+    if (scrollTotal > 0) {
+      const progress = (window.scrollY / scrollTotal) * 100;
+      progressBar.style.width = `${progress}%`;
+    }
+  }, { passive: true });
+}
+
+/* --------------------------------------------------------------------------
+   7. EFECTO SPOTLIGHT INTERACTIVO (LUZ TÁCTIL EN BORDES)
+   -------------------------------------------------------------------------- */
+function initSpotlightCards() {
+  const cards = document.querySelectorAll('.spotlight-card, .metric-card, .plugin-slot, .principle-card, .manifesto-quote-card, .terminal-window');
+
+  cards.forEach(card => {
+    card.classList.add('spotlight-card');
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
+}
+
+/* --------------------------------------------------------------------------
+   8. MOTOR DE PARALAJE Y TILT 3D INTERACTIVO
+   -------------------------------------------------------------------------- */
+function initParallaxAndTilt() {
+  const heroVisual = document.querySelector('.hero-visual');
+  const bannerFrame = document.querySelector('.banner-frame');
+  const heroSection = document.querySelector('.hero');
+
+  if (!heroVisual || !bannerFrame) return;
+
+  let mouseX = 0;
+  let mouseY = 0;
+  let currentTiltX = 0;
+  let currentTiltY = 0;
+  let isHovered = false;
+
+  // Seguimiento suave del cursor sobre la sección Hero
+  heroSection.addEventListener('mousemove', (e) => {
+    isHovered = true;
+    const rect = heroVisual.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const deltaX = (e.clientX - centerX) / (rect.width / 2);
+    const deltaY = (e.clientY - centerY) / (rect.height / 2);
+
+    // Limitación de ángulo para mantener sutileza arquitectónica
+    mouseX = Math.max(-1, Math.min(1, deltaX)) * 8; // Max 8 grados en Y
+    mouseY = Math.max(-1, Math.min(1, deltaY)) * -8; // Max 8 grados en X
+  });
+
+  heroSection.addEventListener('mouseleave', () => {
+    isHovered = false;
+    mouseX = 0;
+    mouseY = 0;
+  });
+
+  // Animación continua con interpolación suave (Lerp) para 60/120 fps
+  function animateTilt() {
+    currentTiltX += (mouseY - currentTiltX) * 0.08;
+    currentTiltY += (mouseX - currentTiltY) * 0.08;
+
+    const scrollOffset = window.scrollY * 0.06;
+
+    bannerFrame.style.transform = `
+      translateY(${scrollOffset}px)
+      rotateX(${currentTiltX.toFixed(2)}deg)
+      rotateY(${currentTiltY.toFixed(2)}deg)
+    `;
+
+    requestAnimationFrame(animateTilt);
+  }
+
+  requestAnimationFrame(animateTilt);
+
+  // Efecto Parallax en el fondo de cuadrícula arquitectónica al hacer scroll
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    document.body.style.backgroundPositionY = `${(scrollY * 0.18).toFixed(1)}px`;
+  }, { passive: true });
+}
+
+/* --------------------------------------------------------------------------
+   9. REVELACIÓN CINEMÁTICA EN SCROLL (INTERSECTION OBSERVER)
+   -------------------------------------------------------------------------- */
+function initScrollReveal() {
+  const targets = document.querySelectorAll(
+    '.metric-card, .manifesto-quote-card, .kernel-canvas, .kernel-inspector, .mcp-feature-item, .terminal-window, .code-tabs-wrapper, .principle-card, .cta-box'
+  );
+
+  targets.forEach((el, index) => {
+    el.classList.add('reveal');
+    el.style.transitionDelay = `${(index % 3) * 0.1}s`;
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  targets.forEach(el => observer.observe(el));
 }
