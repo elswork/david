@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyecto David — Ecosistema de Gestión Modular, Reactivo y Vivo</title>
+  
+  <!-- Metaetiquetas SEO y Redes -->
+  <meta name="description" content="Ecosistema modular de gestión de negocio construido con Flutter y Firebase, basado en arquitectura Microkernel ('Everything is a Plugin') y Model Context Protocol (MCP). Fundado sobre 18 años de producción real.">
+  <meta property="og:title" content="Proyecto David — Ecosistema Modular y Reactivo">
+  <meta property="og:description" content="El software no debe diseñarse como un monumento de piedra, sino como un organismo vivo. 18 años de producción real destilados en un microkernel abierto con Flutter, Firebase y MCP.">
+  <meta property="og:image" content="./assets/david_banner.jpg">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Tipografías de Precisión (Space Grotesk, Inter, JetBrains Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Hoja de Estilos -->
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       BARRA DE NAVEGACIÓN SUPERIOR
+       ======================================================================== -->
+  <header class="site-header">
+    <div class="container nav-wrapper">
+      <div class="brand-group">
+        <a href="#" class="brand-logo">
+          <div class="brand-mark">D</div>
+          <span>DAVID</span>
+        </a>
+        <span class="brand-tag">AGPLv3</span>
+      </div>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#filosofia" class="nav-link">Filosofía</a></li>
+        <li><a href="#arquitectura" class="nav-link">Microkernel</a></li>
+        <li><a href="#mcp" class="nav-link">Capa MCP</a></li>
+        <li><a href="#codigo" class="nav-link">Contratos</a></li>
+        <li><a href="#principios" class="nav-link">Principios</a></li>
+        <li><a href="#comunidad" class="nav-link">Comunidad</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="https://github.com/elswork/david" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+        <button class="mobile-toggle" id="mobile-nav-toggle" aria-label="Abrir menú de navegación">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       SECCIÓN HERO: ESCULTURA CLÁSICA & INGENIERÍA VIVA
+       ======================================================================== -->
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <div class="hero-badges">
+              <span class="badge badge-status">
+                <span class="pulse-dot"></span>
+                <span>NÚCLEO VIVO</span>
+              </span>
+              <span class="badge badge-gold">18 AÑOS EN PRODUCCIÓN REAL</span>
+              <span class="badge">FLUTTER + FIREBASE</span>
+              <span class="badge">AI-NATIVE MCP</span>
+            </div>
+
+            <h1 class="hero-title">
+              El software no es un monumento de piedra.<br>
+              <span class="highlight">Es un organismo vivo.</span>
+            </h1>
+
+            <p class="hero-description">
+              <strong>Proyecto David</strong> es un ecosistema modular de gestión empresarial concebido bajo la arquitectura 
+              Microkernel (<em>"Everything is a Plugin"</em>). Nace de casi dos décadas de lecciones en producción 
+              crítica para ofrecer resiliencia sin fricción, operable por humanos y agentes autónomos mediante <strong>Model Context Protocol</strong>.
+            </p>
+
+            <div class="hero-actions">
+              <a href="#arquitectura" class="btn btn-primary">
+                <span>Explorar Microkernel</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </a>
+              <a href="https://github.com/elswork/david" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                <span>Ver Repositorio</span>
+              </a>
+            </div>
+
+            <div class="clone-box">
+              <span>$</span>
+              <code id="clone-cmd">git clone https://github.com/elswork/david.git</code>
+              <button class="clone-btn" data-copy-target="#clone-cmd">Copiar</button>
+            </div>
+          </div>
+
+          <!-- Marco del Banner con Telemetría -->
+          <div class="hero-visual">
+            <div class="banner-frame">
+              <div class="frame-telemetry">
+                <span class="telemetry-chip">LAT 43.7769° N • FIRENZE</span>
+                <span class="telemetry-chip">CANVAS 60/120 FPS</span>
+              </div>
+              <img src="./assets/david_banner.jpg" alt="Proyecto David — Busto clásico con circuitos dorados de ingeniería viva">
+              <div class="frame-footer">
+                <span class="frame-caption"><strong>DAVID</strong> // Ecosistema de Código Abierto</span>
+                <span class="telemetry-chip">OFFLINE-FIRST</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SECCIÓN FILOSOFÍA: 18 AÑOS EN LAS TRINCHERAS
+         ======================================================================== -->
+    <section class="section philosophy" id="filosofia">
+      <div class="container">
+        <div class="section-eyebrow">Filosofía Operativa</div>
+        <h2 class="section-title">Nacido de la Experiencia Real, Abierto al Futuro</h2>
+        <p class="section-subtitle">
+          Hace 18 años inicié el desarrollo de una aplicación comercial y de pedidos (<em>Rutero</em>). Contra todo pronóstico del ciclo vital habitual del software, sigue hoy en producción diaria. David nace de ese aprendizaje destilado.
+        </p>
+
+        <div class="manifesto-quote-card" style="margin-top: 40px;">
+          <div class="quote-mark">“</div>
+          <p class="manifesto-quote-text">
+            Los grandes proyectos fallan porque intentan predecir desde el día uno todo lo que el negocio necesitará dentro de cinco años. Se encierran en arquitecturas monolíticas y sobreingeniería que terminan colapsando bajo su propio peso.
+          </p>
+          <p class="manifesto-quote-author">
+            — FUNDADOR DE PROYECTO DAVID • 18 AÑOS EN PRODUCCIÓN REAL
+          </p>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-num">18+</div>
+            <div class="metric-label">Años en Producción</div>
+            <p class="metric-desc">Respaldo de fiabilidad operativa en entornos comerciales hostiles.</p>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-num">0 ms</div>
+            <div class="metric-label">Latencia en Local</div>
+            <p class="metric-desc">Arquitectura offline-first: la app responde siempre al instante desde el dispositivo.</p>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-num">100%</div>
+            <div class="metric-label">Modular por Plugins</div>
+            <p class="metric-desc">El núcleo no conoce la lógica de negocio; cada capacidad es un módulo independiente.</p>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-num">AGPLv3</div>
+            <div class="metric-label">Procomún Libre</div>
+            <p class="metric-desc">Garantía estricta de que el núcleo y sus extensiones pertenecerán siempre a la comunidad.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SECCIÓN ARQUITECTURA MICROKERNEL ("EVERYTHING IS A PLUGIN")
+         ======================================================================== -->
+    <section class="section architecture" id="arquitectura">
+      <div class="container">
+        <div class="section-eyebrow">Arquitectura de Referencia</div>
+        <h2 class="section-title">Microkernel: Todo en David es un Plugin</h2>
+        <p class="section-subtitle">
+          Inspirado en el diseño desacoplado de sistemas como DeepSeek Harness y Cordis. Haz clic en cualquier módulo para inspeccionar su contrato, dependencias y ciclo de vida.
+        </p>
+
+        <div class="architecture-layout">
+          <!-- Canvas Interactivo -->
+          <div class="kernel-canvas">
+            <div class="kernel-core-box">
+              <h3>DAVID MICROKERNEL</h3>
+              <p>Contenedor Orquestador Mínimo (`DavidContext`)</p>
+              <div class="kernel-bus-indicator">
+                <span>BUS DE SERVICIOS: ctx.provide&lt;T&gt;() &amp; ctx.inject&lt;T&gt;()</span>
+              </div>
+            </div>
+
+            <div class="plugin-groups">
+              <!-- Plugin Slot 1: Firestore -->
+              <button class="plugin-slot" data-plugin="firestore">
+                <div class="plugin-slot-header">
+                  <span class="plugin-tag">Core</span>
+                  <span class="badge badge-status">Activo</span>
+                </div>
+                <div class="plugin-slot-name">FirestorePlugin</div>
+                <div class="plugin-slot-desc">Persistencia NoSQL y caché offline.</div>
+              </button>
+
+              <!-- Plugin Slot 2: Auth -->
+              <button class="plugin-slot" data-plugin="auth">
+                <div class="plugin-slot-header">
+                  <span class="plugin-tag">Core</span>
+                  <span class="badge badge-status">Activo</span>
+                </div>
+                <div class="plugin-slot-name">FirebaseAuthPlugin</div>
+                <div class="plugin-slot-desc">Tokens, roles y sesiones locales.</div>
+              </button>
+
+              <!-- Plugin Slot 3: Orders (Activo por defecto) -->
+              <button class="plugin-slot active" data-plugin="orders">
+                <div class="plugin-slot-header">
+                  <span class="plugin-tag">Negocio</span>
+                  <span class="badge badge-gold">Insignia</span>
+                </div>
+                <div class="plugin-slot-name">OrdersPlugin</div>
+                <div class="plugin-slot-desc">Preventa rápida, pedidos y tarifas.</div>
+              </button>
+
+              <!-- Plugin Slot 4: Routes -->
+              <button class="plugin-slot" data-plugin="routes">
+                <div class="plugin-slot-header">
+                  <span class="plugin-tag">Negocio</span>
+                  <span class="badge">Opcional</span>
+                </div>
+                <div class="plugin-slot-name">RoutesPlugin</div>
+                <div class="plugin-slot-desc">Itinerarios y reparto comercial.</div>
+              </button>
+
+              <!-- Plugin Slot 5: Hardware Printer -->
+              <button class="plugin-slot" data-plugin="printer">
+                <div class="plugin-slot-header">
+                  <span class="plugin-tag">Hardware</span>
+                  <span class="badge">Periférico</span>
+                </div>
+                <div class="plugin-slot-name">EscPosPrinterPlugin</div>
+                <div class="plugin-slot-desc">Tickets y albaranes Bluetooth/USB.</div>
+              </button>
+
+              <!-- Plugin Slot 6: AI MCP Harness -->
+              <button class="plugin-slot" data-plugin="ai_harness">
+                <div class="plugin-slot-header">
+                  <span class="plugin-tag">Agéntico</span>
+                  <span class="badge badge-gold">MCP Native</span>
+                </div>
+                <div class="plugin-slot-name">McpAgentHarnessPlugin</div>
+                <div class="plugin-slot-desc">Servidor de Tools para LLMs.</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Inspector Lateral Reactivo -->
+          <div class="kernel-inspector">
+            <div class="inspector-header">
+              <div>
+                <h3 class="inspector-title" id="inspector-name">OrdersPlugin</h3>
+                <span class="brand-tag" id="inspector-category">Negocio / Feature-First</span>
+              </div>
+            </div>
+
+            <div class="inspector-field">
+              <div class="inspector-field-label">Contrato de Servicio</div>
+              <div class="inspector-field-val" id="inspector-contract">OrdersService &amp; OrdersRepository</div>
+            </div>
+
+            <div class="inspector-field">
+              <div class="inspector-field-label">Servicios Proveídos (provide)</div>
+              <div class="inspector-field-val" id="inspector-provides">OrdersRepository, OrderDraftNotifier</div>
+            </div>
+
+            <div class="inspector-field">
+              <div class="inspector-field-label">Dependencias Inyectadas (inject)</div>
+              <div class="inspector-field-val" id="inspector-dependencies">DatabaseService, AuthService</div>
+            </div>
+
+            <div class="inspector-field">
+              <div class="inspector-field-label">Herramientas MCP Expuestas a la IA</div>
+              <div class="inspector-field-val" id="inspector-tools">consultar_pedidos(), crear_pedido_borrador(), emitir_albaran()</div>
+            </div>
+
+            <div class="inspector-lifecycle">
+              <div class="inspector-field-label">Ciclo de Vida en Microkernel</div>
+              <div class="lifecycle-step active">
+                <strong>onLoad:</strong> <span id="step-onload">Inyecta DatabaseService</span>
+              </div>
+              <div class="lifecycle-step active">
+                <strong>onReady:</strong> <span id="step-onready">Registra rutas /orders en el App Shell</span>
+              </div>
+              <div class="lifecycle-step active">
+                <strong>onDestroy:</strong> <span id="step-ondestroy">Persiste borradores en cola local</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SECCIÓN CAPA AGÉNTICA: MODEL CONTEXT PROTOCOL (MCP)
+         ======================================================================== -->
+    <section class="section mcp-section" id="mcp">
+      <div class="container">
+        <div class="section-eyebrow">Inteligencia Aumentada</div>
+        <h2 class="section-title">Capa Agéntica Nativa con MCP</h2>
+        <p class="section-subtitle">
+          David no integra un chatbot de juguete pegado con cinta adhesiva. Cada módulo expone formalmente Herramientas (<em>Tools</em>) y Recursos (<em>Resources</em>) bajo el estándar universal <strong>Model Context Protocol</strong>.
+        </p>
+
+        <div class="mcp-grid">
+          <div class="mcp-feature-list">
+            <div class="mcp-feature-item">
+              <div class="mcp-feature-icon">⚡</div>
+              <div class="mcp-feature-text">
+                <h4>Agnosticismo Total de Modelos</h4>
+                <p>Conecta cualquier agente autónomo: Claude, Gemini, DeepSeek o modelos locales privados corriendo en Ollama. Cero vendor lock-in.</p>
+              </div>
+            </div>
+
+            <div class="mcp-feature-item">
+              <div class="mcp-feature-icon">🎙️</div>
+              <div class="mcp-feature-text">
+                <h4>Operativa por Voz y Lenguaje Natural</h4>
+                <p>El comercial en ruta o el operario de almacén puede registrar o consultar pedidos directamente por voz mientras conduce o manipula mercancía.</p>
+              </div>
+            </div>
+
+            <div class="mcp-feature-item">
+              <div class="mcp-feature-icon">🛡️</div>
+              <div class="mcp-feature-text">
+                <h4>Auditoría y Conciliación Nocturna Autónoma</h4>
+                <p>Agentes programados auditan albaranes, arqueos de cobro y rotación de stock al cierre del día, alertando de cualquier descuadre.</p>
+              </div>
+            </div>
+
+            <div class="mcp-feature-item">
+              <div class="mcp-feature-icon">📦</div>
+              <div class="mcp-feature-text">
+                <h4>Predicción de Carga de Furgoneta</h4>
+                <p>Cálculo inteligente de reposición matinal basado en 18 años de estacionalidad, rotación y clientes en ruta.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Consola Interactiva Simulada -->
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </div>
+              <span class="terminal-title">DAVID MCP COPILOT // TERMINAL EN VIVO</span>
+              <div class="terminal-actions">
+                <span class="badge" style="padding: 2px 6px; font-size: 0.65rem;">MCP 1.0</span>
+              </div>
+            </div>
+
+            <div class="terminal-body" id="terminal-body">
+              <div class="terminal-line">
+                <span class="terminal-prompt">david-copilot@mcp:~$</span>
+                <span class="terminal-input">ready</span>
+              </div>
+              <div class="terminal-output">
+                Servidor MCP conectado al DavidContext. Pulsa una de las consultas de abajo para simular la ejecución de una herramienta agéntica:
+              </div>
+            </div>
+
+            <div class="terminal-quick-queries">
+              <button class="quick-query-btn" data-query="pedidos">consultar_pedidos()</button>
+              <button class="quick-query-btn" data-query="auditoria">auditoria_nocturna()</button>
+              <button class="quick-query-btn" data-query="stock">predecir_stock("Ruta Norte")</button>
+              <button class="quick-query-btn" data-query="limpiar">clear</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SECCIÓN CÓDIGO Y CONTRATOS (TABS DE PRECISIÓN)
+         ======================================================================== -->
+    <section class="section code-section" id="codigo">
+      <div class="container">
+        <div class="section-eyebrow">Contratos y Estándares</div>
+        <h2 class="section-title">Código Dart 3 Limpio, Inmutable y Tipado</h2>
+        <p class="section-subtitle">
+          Sin sobreingeniería dogmática de mappers inútiles. Un modelo único de verdad, inyección limpia de dependencias y reactividad pura con Riverpod y Firestore.
+        </p>
+
+        <div class="code-tabs-wrapper">
+          <div class="code-tabs-nav">
+            <button class="tab-btn active" data-tab="tab-plugin">1. Contrato DavidPlugin</button>
+            <button class="tab-btn" data-tab="tab-repo">2. Repositorio Reactivo</button>
+            <button class="tab-btn" data-tab="tab-mcp">3. Definición McpTool</button>
+            <button class="tab-btn" data-tab="tab-prompt">4. Prompt Génesis</button>
+          </div>
+
+          <!-- Panel 1: Contrato DavidPlugin -->
+          <div class="code-tab-panel" id="tab-plugin">
+            <div class="code-tab-header">
+              <span class="code-file-path">lib/kernel/david_plugin.dart</span>
+              <button class="copy-code-btn" data-copy-target="#code-plugin">Copiar Código</button>
+            </div>
+            <pre class="code-pre-box"><code id="code-plugin"><span class="token-keyword">abstract class</span> <span class="token-type">DavidPlugin</span> {
+  <span class="token-type">String</span> <span class="token-keyword">get</span> id;
+  <span class="token-type">String</span> <span class="token-keyword">get</span> name;
+  <span class="token-type">List</span>&lt;<span class="token-type">Type</span>&gt; <span class="token-keyword">get</span> dependencies => [];
+
+  <span class="token-comment">/// Fase 1: Registro de servicios en el contexto (ctx.provide&lt;T&gt;())</span>
+  <span class="token-type">Future</span>&lt;<span class="token-type">void</span>&gt; <span class="token-func">onLoad</span>(<span class="token-type">DavidContext</span> ctx) <span class="token-keyword">async</span> {}
+
+  <span class="token-comment">/// Fase 2: Servicios de terceros listos; suscripción a eventos y rutas UI</span>
+  <span class="token-type">Future</span>&lt;<span class="token-type">void</span>&gt; <span class="token-func">onReady</span>(<span class="token-type">DavidContext</span> ctx) <span class="token-keyword">async</span> {}
+
+  <span class="token-comment">/// Fase 3: Liberación de recursos y persistencia de colas</span>
+  <span class="token-type">Future</span>&lt;<span class="token-type">void</span>&gt; <span class="token-func">onDestroy</span>(<span class="token-type">DavidContext</span> ctx) <span class="token-keyword">async</span> {}
+
+  <span class="token-comment">/// Rutas de navegación expuestas por el plugin al Shell central</span>
+  <span class="token-type">List</span>&lt;<span class="token-type">RouteBase</span>&gt; <span class="token-keyword">get</span> routes => [];
+
+  <span class="token-comment">/// Herramientas y Recursos expuestos al protocolo MCP</span>
+  <span class="token-type">List</span>&lt;<span class="token-type">McpToolDefinition</span>&gt; <span class="token-keyword">get</span> mcpTools => [];
+}</code></pre>
+          </div>
+
+          <!-- Panel 2: Repositorio Reactivo -->
+          <div class="code-tab-panel" id="tab-repo" style="display: none;">
+            <div class="code-tab-header">
+              <span class="code-file-path">lib/plugins/business/orders/data/orders_repository.dart</span>
+              <button class="copy-code-btn" data-copy-target="#code-repo">Copiar Código</button>
+            </div>
+            <pre class="code-pre-box"><code id="code-repo"><span class="token-comment">/// Repositorio reactivo con persistencia local obligatoria y withConverter</span>
+<span class="token-keyword">class</span> <span class="token-type">OrdersRepository</span> {
+  <span class="token-keyword">final</span> <span class="token-type">FirebaseFirestore</span> _firestore;
+  <span class="token-keyword">const</span> <span class="token-type">OrdersRepository</span>(<span class="token-keyword">this</span>._firestore);
+
+  <span class="token-type">CollectionReference</span>&lt;<span class="token-type">Order</span>&gt; <span class="token-keyword">get</span> _ordersRef =>
+      _firestore.collection(<span class="token-string">'orders'</span>).withConverter&lt;<span class="token-type">Order</span>&gt;(
+        fromFirestore: (<span class="token-param">snapshot</span>, _) => <span class="token-type">Order</span>.fromJson(<span class="token-param">snapshot</span>.data()!),
+        toFirestore: (<span class="token-param">order</span>, _) => <span class="token-param">order</span>.toJson(),
+      );
+
+  <span class="token-comment">/// Flujo reactivo directo desde la caché local hacia la UI</span>
+  <span class="token-type">Stream</span>&lt;<span class="token-type">List</span>&lt;<span class="token-type">Order</span>&gt;&gt; <span class="token-func">watchOrdersForRoute</span>(<span class="token-type">String</span> routeId) {
+    <span class="token-keyword">return</span> _ordersRef
+        .where(<span class="token-string">'routeId'</span>, isEqualTo: routeId)
+        .orderBy(<span class="token-string">'createdAt'</span>, descending: <span class="token-keyword">true</span>)
+        .snapshots(includeMetadataChanges: <span class="token-keyword">true</span>)
+        .map((<span class="token-param">snap</span>) => <span class="token-param">snap</span>.docs.map((<span class="token-param">d</span>) => <span class="token-param">d</span>.data()).toList());
+  }
+}</code></pre>
+          </div>
+
+          <!-- Panel 3: Definición MCP Tool -->
+          <div class="code-tab-panel" id="tab-mcp" style="display: none;">
+            <div class="code-tab-header">
+              <span class="code-file-path">lib/plugins/ai/mcp_tool_definition.dart</span>
+              <button class="copy-code-btn" data-copy-target="#code-mcp">Copiar Código</button>
+            </div>
+            <pre class="code-pre-box"><code id="code-mcp"><span class="token-comment">/// Contrato formal de herramienta expuesta a agentes mediante MCP</span>
+<span class="token-keyword">class</span> <span class="token-type">McpToolDefinition</span> {
+  <span class="token-keyword">final</span> <span class="token-type">String</span> name;
+  <span class="token-keyword">final</span> <span class="token-type">String</span> description;
+  <span class="token-keyword">final</span> <span class="token-type">Map</span>&lt;<span class="token-type">String</span>, <span class="token-keyword">dynamic</span>&gt; inputSchema;
+  <span class="token-keyword">final</span> <span class="token-type">Future</span>&lt;<span class="token-type">McpToolResult</span>&gt; <span class="token-type">Function</span>(<span class="token-type">Map</span>&lt;<span class="token-type">String</span>, <span class="token-keyword">dynamic</span>&gt; args) handler;
+
+  <span class="token-keyword">const</span> <span class="token-type">McpToolDefinition</span>({
+    <span class="token-keyword">required</span> <span class="token-keyword">this</span>.name,
+    <span class="token-keyword">required</span> <span class="token-keyword">this</span>.description,
+    <span class="token-keyword">required</span> <span class="token-keyword">this</span>.inputSchema,
+    <span class="token-keyword">required</span> <span class="token-keyword">this</span>.handler,
+  });
+}</code></pre>
+          </div>
+
+          <!-- Panel 4: Prompt Génesis -->
+          <div class="code-tab-panel" id="tab-prompt" style="display: none;">
+            <div class="code-tab-header">
+              <span class="code-file-path">PROMPT MAESTRO PARA AGENTES Y DESARROLLADORES</span>
+              <button class="copy-code-btn" data-copy-target="#code-prompt">Copiar Prompt</button>
+            </div>
+            <pre class="code-pre-box"><code id="code-prompt">Actúa como un Ingeniero de Software Principal y Arquitecto de Soluciones Senior
+con más de 15 años de experiencia liderando proyectos con Flutter y Firebase,
+experto en arquitecturas Microkernel ("Everything is a Plugin"), diseño
+Feature-First Pragmático y el protocolo MCP (Model Context Protocol).
+
+Tu misión es inicializar y extender el código de Proyecto David bajo los más
+altos estándares de la industria, respetando:
+1. Microkernel DavidContext (provide/inject y ciclo de vida de plugins).
+2. Un único modelo inmutable por entidad (sin infierno de mappers Dto->Entity->Model).
+3. Persistencia offline obligatoria y reactividad pura con Riverpod y Firestore.
+4. Exposición de Tools y Resources compatibles con MCP en cada plugin de negocio.</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SECCIÓN PRINCIPIOS DE INGENIERÍA
+         ======================================================================== -->
+    <section class="section" id="principios">
+      <div class="container">
+        <div class="section-eyebrow">Pragmatismo Técnico</div>
+        <h2 class="section-title">Principios Inquebrantables de Desarrollo</h2>
+        <p class="section-subtitle">
+          Rechazamos las modas pasajeras y el purismo académico que ahoga los proyectos en burocracia técnica. Programamos cimientos sólidos para durar décadas.
+        </p>
+
+        <div class="principles-grid">
+          <div class="principle-card">
+            <div class="principle-number">01 // REGLA FUNDAMENTAL</div>
+            <h3>Pragmatismo sobre Dogma (Anti-Mappers)</h3>
+            <p>Prohibido el desdoblamiento innecesario de modelos (`Dto` &rarr; `Model` &rarr; `Entity` &rarr; `UiState`). Un solo modelo inmutable en Dart 3 sirve directamente para la persistencia en Firestore, las reglas de negocio y las vistas Flutter.</p>
+          </div>
+
+          <div class="principle-card">
+            <div class="principle-number">02 // VELOCIDAD DE USO</div>
+            <h3>La Regla de los Tres Toques</h3>
+            <p>Si un operador comercial en ruta necesita más de tres toques para registrar un pedido o verificar una entrega habitual, la pantalla está mal diseñada. La velocidad y la ergonomía mandan sobre cualquier floritura visual.</p>
+          </div>
+
+          <div class="principle-card">
+            <div class="principle-number">03 // REALIDAD HOSTIL</div>
+            <h3>Offline-First por Definición</h3>
+            <p>Tratamos la conexión a internet como un accidente feliz, no como un requisito. Toda la aplicación opera contra caché local estructurada y sincroniza en segundo plano sin bloquear jamás la interacción humana.</p>
+          </div>
+
+          <div class="principle-card">
+            <div class="principle-number">04 // SOBERANÍA TECNOLÓGICA</div>
+            <h3>Agnosticismo Agéntico Nativo</h3>
+            <p>David no depende de ningún modelo de lenguaje propietario. Mediante el estándar universal MCP, el negocio conserva la soberanía total de sus datos y puede alternar entre LLMs en la nube o modelos locales privados.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SECCIÓN COMUNIDAD Y LLAMADA A LA ACCIÓN
+         ======================================================================== -->
+    <section class="section cta-section" id="comunidad">
+      <div class="container">
+        <div class="cta-box">
+          <div class="section-eyebrow" style="justify-content: center;">Únete a la Forja</div>
+          <h2 class="section-title">David está en su fase de génesis.<br>Construyámoslo juntos.</h2>
+          <p class="section-subtitle" style="margin: 0 auto;">
+            Queremos que David sea tan bueno que hasta nuestros clientes y nuestros rivales quieran utilizarlo. Aporta al microkernel, diseña un plugin para tu sector o expón nuevas herramientas agénticas.
+          </p>
+
+          <div class="cta-actions">
+            <a href="https://github.com/elswork/david" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+              </svg>
+              <span>Dar Estrella en GitHub</span>
+            </a>
+            <a href="https://github.com/elswork/david/discussions" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+              <span>Debatir en Discussions</span>
+            </a>
+            <a href="https://github.com/elswork/david/issues" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+              <span>Abrir un Issue</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       PIE DE PÁGINA
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4>PROYECTO DAVID</h4>
+          <p>
+            Un ecosistema vivo de gestión empresarial. Nacido de la experiencia en las trincheras del software real, abierto al futuro.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Ecosistema</h5>
+          <ul class="footer-links">
+            <li><a href="#filosofia">Filosofía</a></li>
+            <li><a href="#arquitectura">Microkernel</a></li>
+            <li><a href="#mcp">Capa MCP</a></li>
+            <li><a href="#codigo">Contratos Dart 3</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Comunidad</h5>
+          <ul class="footer-links">
+            <li><a href="https://github.com/elswork/david" target="_blank" rel="noopener noreferrer">Repositorio</a></li>
+            <li><a href="https://github.com/elswork/david/discussions" target="_blank" rel="noopener noreferrer">Discussions</a></li>
+            <li><a href="https://github.com/elswork/david/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Licencia AGPLv3</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; Proyecto David. Distribuido bajo licencia libre GNU AGPLv3.</div>
+        <div>Inspirado en la ingeniería griega y el cálculo analógico.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="./app.js"></script>
+</body>
+</html>
