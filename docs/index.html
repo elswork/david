@@ -408,6 +408,18 @@
               <input type="text" id="wiki-search-input" class="wiki-search-input" placeholder="Buscar en la LLM-Wiki (ej. microkernel, 18 años, mappers, mcp, adr)..." autocomplete="off">
               <button id="wiki-search-clear" class="wiki-clear-btn" title="Limpiar búsqueda" style="display: none;">&times;</button>
             </div>
+
+            <!-- Selector de Vistas: Explorador vs Grafo 2D -->
+            <div class="wiki-view-switcher">
+              <button class="wiki-view-btn active" data-view="explorer" id="btn-view-explorer" title="Vista Lista y Lector">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18" rx="1"></rect><rect x="14" y="3" width="7" height="18" rx="1"></rect></svg>
+                <span>Explorador</span>
+              </button>
+              <button class="wiki-view-btn" data-view="graph" id="btn-view-graph" title="Grafo 2D Interactivo de Conocimiento">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><circle cx="12" cy="18" r="3"></circle><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"></line><line x1="7.5" y1="8.5" x2="10.5" y2="15.5"></line><line x1="16.5" y1="8.5" x2="13.5" y2="15.5"></line></svg>
+                <span>Grafo 2D</span>
+              </button>
+            </div>
             
             <div class="wiki-meta-badge">
               <span class="pulse-dot"></span>
@@ -426,8 +438,34 @@
             <button class="wiki-cat-btn" data-category="Decisiones (ADRs)">Decisiones (ADRs)</button>
           </div>
 
+          <!-- Vista Alternativa: Grafo 2D de Conocimiento Interactivo -->
+          <div class="wiki-graph-view" id="wiki-graph-view" style="display: none;">
+            <div class="wiki-graph-canvas-container">
+              <canvas id="wiki-graph-canvas"></canvas>
+              
+              <!-- Controles de Zoom y Centrado -->
+              <div class="wiki-graph-controls">
+                <button class="graph-ctrl-btn" id="graph-zoom-in" title="Acercar">+</button>
+                <button class="graph-ctrl-btn" id="graph-zoom-out" title="Alejar">−</button>
+                <button class="graph-ctrl-btn" id="graph-reset" title="Restablecer vista">↺</button>
+              </div>
+
+              <!-- Leyenda de Categorías -->
+              <div class="wiki-graph-legend">
+                <div class="legend-item"><span class="legend-color legend-filo"></span> Filosofía</div>
+                <div class="legend-item"><span class="legend-color legend-arq"></span> Arquitectura</div>
+                <div class="legend-item"><span class="legend-color legend-ai"></span> AI &amp; Agentes</div>
+                <div class="legend-item"><span class="legend-color legend-adr"></span> Decisiones (ADRs)</div>
+              </div>
+
+              <div class="wiki-graph-instructions">
+                <span>💡 Arrastra los nodos con el ratón o touch • Haz clic en un nodo para abrir su artículo</span>
+              </div>
+            </div>
+          </div>
+
           <!-- Layout de Explorador: Lista Lateral + Lector Principal -->
-          <div class="wiki-browser-layout">
+          <div class="wiki-browser-layout" id="wiki-browser-layout">
             <!-- Columna Izquierda: Índice de Páginas -->
             <div class="wiki-sidebar">
               <div class="wiki-sidebar-header">
@@ -442,10 +480,27 @@
             <!-- Columna Derecha: Lector de Artículo Seleccionado -->
             <div class="wiki-reader" id="wiki-reader">
               <div class="wiki-reader-header">
-                <div class="wiki-reader-meta">
-                  <span class="brand-tag" id="wiki-current-category">Arquitectura</span>
-                  <span class="wiki-time-chip" id="wiki-current-time">3 min de lectura</span>
-                  <span class="wiki-path-chip" id="wiki-current-path">wiki/architecture/microkernel_core.md</span>
+                <div class="wiki-reader-header-top">
+                  <div class="wiki-reader-meta">
+                    <span class="brand-tag" id="wiki-current-category">Arquitectura</span>
+                    <span class="wiki-time-chip" id="wiki-current-time">3 min de lectura</span>
+                    <span class="wiki-path-chip" id="wiki-current-path">wiki/architecture/microkernel_core.md</span>
+                  </div>
+                  <!-- Acciones del lector: Copiar enlace, Copiar para LLM, Modo Zen -->
+                  <div class="wiki-reader-actions">
+                    <button class="wiki-action-btn" id="wiki-copy-link-btn" title="Copiar enlace permanente (#wiki/...)">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                      <span class="btn-text">Copiar Enlace</span>
+                    </button>
+                    <button class="wiki-action-btn" id="wiki-copy-llm-btn" title="Copiar artículo formateado para agentes LLM">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M9 9h6"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg>
+                      <span class="btn-text">Copiar para LLM</span>
+                    </button>
+                    <button class="wiki-action-btn wiki-zen-btn" id="wiki-zen-toggle-btn" title="Modo Pantalla Completa / Zen">
+                      <svg class="icon-zen-expand" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg>
+                      <svg class="icon-zen-collapse" style="display:none;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14h6v6"></path><path d="M20 10h-6V4"></path><path d="M14 10l7-7"></path><path d="M10 14L3 21"></path></svg>
+                    </button>
+                  </div>
                 </div>
                 <h3 class="wiki-reader-title" id="wiki-current-title">Microkernel: El Núcleo DavidContext</h3>
                 <div class="wiki-tags-row" id="wiki-current-tags">
@@ -460,18 +515,35 @@
 
               <!-- Enlaces Relacionados / Conexiones del Grafo -->
               <div class="wiki-reader-footer">
-                <div class="wiki-graph-title">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="18" cy="5" r="3"></circle>
-                    <circle cx="6" cy="12" r="3"></circle>
-                    <circle cx="18" cy="19" r="3"></circle>
-                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                  </svg>
-                  <span>Nodos Conectados en el Grafo (Wikilinks):</span>
+                <!-- Enlaces salientes (Wikilinks) -->
+                <div class="wiki-footer-block">
+                  <div class="wiki-graph-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="18" cy="5" r="3"></circle>
+                      <circle cx="6" cy="12" r="3"></circle>
+                      <circle cx="18" cy="19" r="3"></circle>
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                    </svg>
+                    <span>Nodos Conectados (Enlaces Salientes):</span>
+                  </div>
+                  <div class="wiki-links-chips" id="wiki-current-links">
+                    <!-- Chips de enlaces salientes -->
+                  </div>
                 </div>
-                <div class="wiki-links-chips" id="wiki-current-links">
-                  <!-- Chips de enlaces -->
+
+                <!-- Backlinks entrantes -->
+                <div class="wiki-footer-block">
+                  <div class="wiki-graph-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M9 14 4 9l5-5"></path>
+                      <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"></path>
+                    </svg>
+                    <span>Mencionado en (Backlinks Entrantes):</span>
+                  </div>
+                  <div class="wiki-links-chips wiki-backlinks-chips" id="wiki-current-backlinks">
+                    <!-- Chips de backlinks -->
+                  </div>
                 </div>
               </div>
             </div>
