@@ -1389,7 +1389,7 @@ function initParallaxAndTilt() {
    -------------------------------------------------------------------------- */
 function initScrollReveal() {
   const targets = document.querySelectorAll(
-    '.metric-card, .manifesto-quote-card, .kernel-canvas, .kernel-inspector, .mcp-feature-item, .terminal-window, .wiki-explorer-card, .code-tabs-wrapper, .principle-card, .cta-box'
+    '.tech-stack-ribbon, .metric-card, .manifesto-quote-card, .kernel-canvas, .kernel-inspector, .mcp-feature-item, .terminal-window, .wiki-explorer-card, .code-tabs-wrapper, .principle-card, .cta-box'
   );
 
   targets.forEach((el, index) => {
