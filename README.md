@@ -13,6 +13,7 @@
 [![Arquitectura: Microkernel](https://img.shields.io/badge/Arquitectura-Microkernel_%22Everything_is_a_Plugin%22-success.svg)]()
 [![Patrón: Cordis / Harness](https://img.shields.io/badge/Patr%C3%B3n-Cordis_%2F_Harness_Inspired-purple.svg)]()
 [![AI: Model Context Protocol (MCP)](https://img.shields.io/badge/AI-Model_Context_Protocol_(MCP)-8A2BE2.svg)]()
+[![Knowledge: LLM--Wiki](https://img.shields.io/badge/Knowledge-LLM--Wiki_Native-D97706.svg)](wiki/)
 
 ---
 
@@ -88,6 +89,9 @@ David no es una aplicación monolítica con pantallas acopladas; es un **Kernel 
      * Auditoría y conciliación nocturna automática de albaranes frente a cobros.
      * Sugerencia predictiva de reposición de stock basada en rotación y estacionalidad.
    - **Agnosticismo total de IA:** David no depende de ningún LLM cerrado; cualquier cerebro compatible con MCP puede operar como copiloto inteligente sin comprometer la soberanía de los datos.
+5. **Base de Conocimiento Viva con LLM-Wiki:**
+   - David formaliza su memoria técnica, operativa y comercial mediante una [**LLM-Wiki**](wiki/) navegable en grafo, con páginas atómicas en Markdown, metadatos YAML frontmatter y catálogo indexado (`wiki/catalog.json`).
+   - Tanto desarrolladores humanos como agentes de IA pueden auditar lecciones aprendidas de 18 años, especificaciones de plugins, contratos de microkernel y registros de decisiones arquitectónicas (ADRs), así como sincronizar conocimiento incrementalmente.
 
 ---
 

@@ -40,6 +40,7 @@
         <li><a href="#filosofia" class="nav-link">Filosofía</a></li>
         <li><a href="#arquitectura" class="nav-link">Microkernel</a></li>
         <li><a href="#mcp" class="nav-link">Capa MCP</a></li>
+        <li><a href="#wiki" class="nav-link">LLM-Wiki</a></li>
         <li><a href="#codigo" class="nav-link">Contratos</a></li>
         <li><a href="#principios" class="nav-link">Principios</a></li>
         <li><a href="#comunidad" class="nav-link">Comunidad</a></li>
@@ -385,6 +386,101 @@
     </section>
 
     <!-- ========================================================================
+         SECCIÓN LLM-WIKI: BASE DE CONOCIMIENTO VIVA Y EXPLORADOR
+         ======================================================================== -->
+    <section class="section wiki-section" id="wiki">
+      <div class="container">
+        <div class="section-eyebrow">Conocimiento Vivo en Grafo</div>
+        <h2 class="section-title">LLM-Wiki: Memoria Operativa para Humanos e IA</h2>
+        <p class="section-subtitle">
+          El conocimiento no se fosiliza en documentos olvidados. David estructura su memoria técnica y de negocio en una 
+          <strong>LLM-Wiki bidireccional</strong>: indexable por modelos fundacionales mediante MCP y navegable por ingenieros en tiempo real.
+        </p>
+
+        <div class="wiki-explorer-card">
+          <!-- Barra de Búsqueda y Filtros de la Wiki -->
+          <div class="wiki-topbar">
+            <div class="wiki-search-box">
+              <svg class="wiki-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+              <input type="text" id="wiki-search-input" class="wiki-search-input" placeholder="Buscar en la LLM-Wiki (ej. microkernel, 18 años, mappers, mcp, adr)..." autocomplete="off">
+              <button id="wiki-search-clear" class="wiki-clear-btn" title="Limpiar búsqueda" style="display: none;">&times;</button>
+            </div>
+            
+            <div class="wiki-meta-badge">
+              <span class="pulse-dot"></span>
+              <span id="wiki-articles-count">8 Entradas Activas</span>
+              <span class="wiki-pipe">•</span>
+              <span class="wiki-tag-mcp">MCP /read_page()</span>
+            </div>
+          </div>
+
+          <!-- Filtro de Categorías -->
+          <div class="wiki-categories-bar" id="wiki-categories-nav">
+            <button class="wiki-cat-btn active" data-category="all">Todas las Categorías</button>
+            <button class="wiki-cat-btn" data-category="Filosofía">Filosofía</button>
+            <button class="wiki-cat-btn" data-category="Arquitectura">Arquitectura</button>
+            <button class="wiki-cat-btn" data-category="AI &amp; Agentes">AI &amp; Agentes</button>
+            <button class="wiki-cat-btn" data-category="Decisiones (ADRs)">Decisiones (ADRs)</button>
+          </div>
+
+          <!-- Layout de Explorador: Lista Lateral + Lector Principal -->
+          <div class="wiki-browser-layout">
+            <!-- Columna Izquierda: Índice de Páginas -->
+            <div class="wiki-sidebar">
+              <div class="wiki-sidebar-header">
+                <span>ÍNDICE DE CONOCIMIENTO</span>
+                <span id="wiki-results-indicator" class="wiki-results-count">8 artículos</span>
+              </div>
+              <div class="wiki-articles-list" id="wiki-articles-list">
+                <!-- Se inyecta reactivamente mediante JavaScript -->
+              </div>
+            </div>
+
+            <!-- Columna Derecha: Lector de Artículo Seleccionado -->
+            <div class="wiki-reader" id="wiki-reader">
+              <div class="wiki-reader-header">
+                <div class="wiki-reader-meta">
+                  <span class="brand-tag" id="wiki-current-category">Arquitectura</span>
+                  <span class="wiki-time-chip" id="wiki-current-time">3 min de lectura</span>
+                  <span class="wiki-path-chip" id="wiki-current-path">wiki/architecture/microkernel_core.md</span>
+                </div>
+                <h3 class="wiki-reader-title" id="wiki-current-title">Microkernel: El Núcleo DavidContext</h3>
+                <div class="wiki-tags-row" id="wiki-current-tags">
+                  <!-- Tags reactivos -->
+                </div>
+              </div>
+
+              <!-- Cuerpo Renderizado del Artículo -->
+              <div class="wiki-reader-body" id="wiki-reader-body">
+                <!-- Contenido renderizado -->
+              </div>
+
+              <!-- Enlaces Relacionados / Conexiones del Grafo -->
+              <div class="wiki-reader-footer">
+                <div class="wiki-graph-title">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                  </svg>
+                  <span>Nodos Conectados en el Grafo (Wikilinks):</span>
+                </div>
+                <div class="wiki-links-chips" id="wiki-current-links">
+                  <!-- Chips de enlaces -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
          SECCIÓN CÓDIGO Y CONTRATOS (TABS DE PRECISIÓN)
          ======================================================================== -->
     <section class="section code-section" id="codigo">
@@ -592,6 +688,7 @@ altos estándares de la industria, respetando:
             <li><a href="#filosofia">Filosofía</a></li>
             <li><a href="#arquitectura">Microkernel</a></li>
             <li><a href="#mcp">Capa MCP</a></li>
+            <li><a href="#wiki">LLM-Wiki</a></li>
             <li><a href="#codigo">Contratos Dart 3</a></li>
           </ul>
         </div>
@@ -614,6 +711,7 @@ altos estándares de la industria, respetando:
   </footer>
 
   <!-- Scripts -->
+  <script src="./wiki_data.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>

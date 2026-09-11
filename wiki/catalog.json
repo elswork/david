@@ -1,0 +1,110 @@
+{
+  "version": "1.0.0",
+  "project": "Proyecto David",
+  "name": "David LLM-Wiki Knowledge Graph",
+  "last_updated": "2026-09-11",
+  "categories": [
+    "Filosofía",
+    "Arquitectura",
+    "AI & Agentes",
+    "Decisiones (ADRs)"
+  ],
+  "articles": [
+    {
+      "id": "18-years-lessons",
+      "title": "18 Años en Producción: Lecciones de Trinchera",
+      "slug": "18_years_lessons",
+      "category": "Filosofía",
+      "path": "wiki/philosophy/18_years_lessons.md",
+      "description": "Por qué el software debe ser un organismo vivo y no un monumento de piedra. Principios anti-fragilidad.",
+      "tags": ["filosofia", "produccion", "rutero", "resiliencia", "lecciones"],
+      "last_updated": "2026-09-11",
+      "reading_time_min": 3,
+      "links": ["microkernel-core", "anti-overengineering", "ADR-001"]
+    },
+    {
+      "id": "microkernel-core",
+      "title": "Microkernel: El Núcleo DavidContext",
+      "slug": "microkernel_core",
+      "category": "Arquitectura",
+      "path": "wiki/architecture/microkernel_core.md",
+      "description": "Especificación técnica del contenedor orquestador, bus de servicios y ciclo de vida de Proyecto David.",
+      "tags": ["microkernel", "david-context", "lifecycle", "dependency-injection", "dart"],
+      "last_updated": "2026-09-11",
+      "reading_time_min": 4,
+      "links": ["everything-is-a-plugin", "anti-overengineering", "model-context-protocol"]
+    },
+    {
+      "id": "everything-is-a-plugin",
+      "title": "Taxonomía: Everything is a Plugin",
+      "slug": "everything_is_a_plugin",
+      "category": "Arquitectura",
+      "path": "wiki/architecture/everything_is_a_plugin.md",
+      "description": "Clasificación de plugins en Proyecto David: Core, Negocio, Hardware e IA.",
+      "tags": ["plugins", "taxonomia", "core", "business", "hardware", "ai"],
+      "last_updated": "2026-09-11",
+      "reading_time_min": 3,
+      "links": ["microkernel-core", "model-context-protocol", "ADR-001"]
+    },
+    {
+      "id": "anti-overengineering",
+      "title": "Anti-Overengineering: Cero Infierno de Mappers",
+      "slug": "anti_overengineering",
+      "category": "Arquitectura",
+      "path": "wiki/architecture/anti_overengineering.md",
+      "description": "Por qué prohibimos la sobreingeniería dogmática de capas redundantes en favor de un modelo inmutable único.",
+      "tags": ["anti-overengineering", "dart3", "freezed", "riverpod", "firestore", "pragmatismo"],
+      "last_updated": "2026-09-11",
+      "reading_time_min": 4,
+      "links": ["18-years-lessons", "microkernel-core", "ADR-002"]
+    },
+    {
+      "id": "model-context-protocol",
+      "title": "Model Context Protocol (MCP) en David",
+      "slug": "model_context_protocol",
+      "category": "AI & Agentes",
+      "path": "wiki/ai/model_context_protocol.md",
+      "description": "Estándar abierto para conectar agentes inteligentes (Claude, Gemini, DeepSeek, Ollama) con la operativa de negocio.",
+      "tags": ["mcp", "model-context-protocol", "agentes", "tools", "deepseek-harness", "ollama"],
+      "last_updated": "2026-09-11",
+      "reading_time_min": 4,
+      "links": ["everything-is-a-plugin", "llm-wiki-architecture", "ADR-001"]
+    },
+    {
+      "id": "llm-wiki-architecture",
+      "title": "Arquitectura LLM-Wiki en Todos los Niveles",
+      "slug": "llm_wiki_architecture",
+      "category": "AI & Agentes",
+      "path": "wiki/ai/llm_wiki_architecture.md",
+      "description": "Especificación técnica del sistema de conocimiento vivo bidireccional entre agentes y humanos en Proyecto David.",
+      "tags": ["llm-wiki", "knowledge-base", "agentes", "grafo", "mcp", "documentacion"],
+      "last_updated": "2026-09-11",
+      "reading_time_min": 4,
+      "links": ["model-context-protocol", "microkernel-core", "18-years-lessons"]
+    },
+    {
+      "id": "ADR-001",
+      "title": "ADR-001: Microkernel frente a Monolito Clean/DDD",
+      "slug": "ADR-001-microkernel-over-clean-monolith",
+      "category": "Decisiones (ADRs)",
+      "path": "wiki/decisions/ADR-001-microkernel-over-clean-monolith.md",
+      "description": "Decisión de adoptar el microkernel 'Everything is a Plugin' en lugar de estructuras monolíticas multicapa tradicionales.",
+      "tags": ["adr", "arquitectura", "microkernel", "clean-architecture", "desacoplamiento"],
+      "last_updated": "2026-09-11",
+      "reading_time_min": 3,
+      "links": ["microkernel-core", "everything-is-a-plugin"]
+    },
+    {
+      "id": "ADR-002",
+      "title": "ADR-002: Flutter y Firebase con Offline-First",
+      "slug": "ADR-002-flutter-firebase-offline-first",
+      "category": "Decisiones (ADRs)",
+      "path": "wiki/decisions/ADR-002-flutter-firebase-offline-first.md",
+      "description": "Decisión tecnológica de frontend unificado con Flutter y backend reactivo sin servidores con Firestore Offline-First.",
+      "tags": ["adr", "flutter", "firebase", "firestore", "offline-first", "riverpod"],
+      "last_updated": "2026-09-11",
+      "reading_time_min": 3,
+      "links": ["anti-overengineering", "18-years-lessons"]
+    }
+  ]
+}

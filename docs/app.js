@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollProgress();
   initMicrokernelExplorer();
   initMcpTerminal();
+  initLlmWikiExplorer();
   initCodeTabs();
   initCopyButtons();
   initMobileNav();
@@ -266,7 +267,308 @@ function initMcpTerminal() {
 }
 
 /* --------------------------------------------------------------------------
-   3. GESTOR DE PESTAÑAS DE CÓDIGO
+   3. EXPLORADOR INTERACTIVO LLM-WIKI (GRAFO DE CONOCIMIENTO VIVO)
+   -------------------------------------------------------------------------- */
+function initLlmWikiExplorer() {
+  const searchInput = document.getElementById('wiki-search-input');
+  const clearBtn = document.getElementById('wiki-search-clear');
+  const catButtons = document.querySelectorAll('.wiki-cat-btn');
+  const articlesListEl = document.getElementById('wiki-articles-list');
+  const resultsIndicator = document.getElementById('wiki-results-indicator');
+  const articlesCountEl = document.getElementById('wiki-articles-count');
+
+  const readerCategory = document.getElementById('wiki-current-category');
+  const readerTime = document.getElementById('wiki-current-time');
+  const readerPath = document.getElementById('wiki-current-path');
+  const readerTitle = document.getElementById('wiki-current-title');
+  const readerTags = document.getElementById('wiki-current-tags');
+  const readerBody = document.getElementById('wiki-reader-body');
+  const readerLinks = document.getElementById('wiki-current-links');
+
+  if (!articlesListEl || typeof LLM_WIKI_DATA === 'undefined') return;
+
+  const dataset = LLM_WIKI_DATA;
+  const articlesMap = dataset.articles;
+  const allArticles = Object.values(articlesMap);
+
+  let activeCategory = 'all';
+  let activeSearch = '';
+  let selectedArticleId = 'microkernel-core';
+
+  if (articlesCountEl) {
+    articlesCountEl.textContent = `${allArticles.length} Entradas Activas`;
+  }
+
+  // Renderizador liviano de Markdown de precisión
+  function renderMarkdown(md) {
+    if (!md) return '';
+    let html = md;
+
+    // Escapar etiquetas HTML crudas (excepto las que creemos)
+    html = html
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+    // Bloques de código pre / code (```dart ... ```)
+    html = html.replace(/```([a-z0-9_-]*)\n([\s\S]*?)```/g, (match, lang, code) => {
+      return `<pre class="wiki-code-block"><div class="wiki-code-lang">${lang || 'código'}</div><code>${code.trim()}</code></pre>`;
+    });
+
+    // Código en línea (`...`)
+    html = html.replace(/`([^`]+)`/g, '<code class="wiki-inline-code">$1</code>');
+
+    // Citas (> ...)
+    html = html.replace(/^>\s*(.+)$/gm, '<blockquote class="wiki-quote">$1</blockquote>');
+
+    // Encabezados
+    html = html.replace(/^### (.*$)/gm, '<h4 class="wiki-h3">$1</h4>');
+    html = html.replace(/^## (.*$)/gm, '<h3 class="wiki-h2">$1</h3>');
+    html = html.replace(/^# (.*$)/gm, '<h2 class="wiki-h1">$1</h2>');
+
+    // Negrita y cursiva
+    html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+
+    // Tablas Markdown simples
+    html = html.replace(/\n\|(.+)\|\n\|[-:\s|]+\|\n((?:\|.*\|\n?)*)/g, (match, header, rows) => {
+      const ths = header.split('|').map(h => h.trim()).filter(h => h.length > 0)
+        .map(h => `<th>${h}</th>`).join('');
+      const trs = rows.trim().split('\n').map(row => {
+        const tds = row.split('|').map(td => td.trim()).filter(td => td.length > 0)
+          .map(td => `<td>${td}</td>`).join('');
+        return `<tr>${tds}</tr>`;
+      }).join('');
+      return `<div class="wiki-table-wrapper"><table class="wiki-table"><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table></div>`;
+    });
+
+    // Listas desordenadas (- o *)
+    html = html.replace(/^[\*\-]\s+(.*)$/gm, '<li class="wiki-li">$1</li>');
+    html = html.replace(/(<li class="wiki-li">[\s\S]*?<\/li>)/g, '<ul class="wiki-ul">$1</ul>');
+    // Limpiar <ul> anidadas contiguas
+    html = html.replace(/<\/ul>\s*<ul class="wiki-ul">/g, '');
+
+    // Listas ordenadas (1. 2.)
+    html = html.replace(/^\d+\.\s+(.*)$/gm, '<li class="wiki-oli">$1</li>');
+    html = html.replace(/(<li class="wiki-oli">[\s\S]*?<\/li>)/g, '<ol class="wiki-ol">$1</ol>');
+    html = html.replace(/<\/ol>\s*<ol class="wiki-ol">/g, '');
+
+    // Wikilinks [[target]] o [[target|label]]
+    html = html.replace(/\[\[(?:wiki\/)?([a-zA-Z0-9_\-\/]+)(?:\|([^\]]+))?\]\]/g, (match, linkTarget, label) => {
+      // Normalizar target a slug / id
+      const parts = linkTarget.split('/');
+      const slugOrId = parts[parts.length - 1];
+      
+      // Buscar artículo que coincida por id o por slug
+      const found = allArticles.find(a => a.id === slugOrId || a.slug === slugOrId);
+      const displayLabel = label || (found ? found.title : slugOrId);
+      const targetId = found ? found.id : slugOrId;
+
+      return `<a href="#wiki" class="wiki-wikilink" data-wikilink="${targetId}">[[${displayLabel}]]</a>`;
+    });
+
+    // Párrafos (líneas con contenido no envueltas)
+    html = html.split('\n\n').map(para => {
+      const trimmed = para.trim();
+      if (!trimmed) return '';
+      if (trimmed.startsWith('<h') || trimmed.startsWith('<pre') || 
+          trimmed.startsWith('<blockquote') || trimmed.startsWith('<ul') || 
+          trimmed.startsWith('<ol') || trimmed.startsWith('<div') || trimmed.startsWith('---')) {
+        return trimmed;
+      }
+      if (trimmed === '---') {
+        return '<hr class="wiki-divider">';
+      }
+      return `<p class="wiki-p">${trimmed.replace(/\n/g, '<br>')}</p>`;
+    }).join('\n');
+
+    return html;
+  }
+
+  // Renderizar el artículo seleccionado en el lector
+  function displayArticle(articleId) {
+    const article = articlesMap[articleId] || allArticles[0];
+    if (!article) return;
+
+    selectedArticleId = article.id;
+
+    // Metadatos
+    if (readerCategory) readerCategory.textContent = article.category;
+    if (readerTime) readerTime.textContent = `${article.reading_time_min || 3} min de lectura`;
+    if (readerPath) readerPath.textContent = article.path;
+    if (readerTitle) readerTitle.textContent = article.title;
+
+    // Tags
+    if (readerTags) {
+      readerTags.innerHTML = (article.tags || []).map(t => `<span class="wiki-tag">#${t}</span>`).join('');
+    }
+
+    // Cuerpo
+    if (readerBody) {
+      readerBody.innerHTML = renderMarkdown(article.body);
+    }
+
+    // Nodos Conectados (Links del Grafo)
+    if (readerLinks) {
+      const links = article.links || [];
+      if (!links.length) {
+        readerLinks.innerHTML = '<span class="wiki-no-links">Nodo raíz sin enlaces directos.</span>';
+      } else {
+        readerLinks.innerHTML = links.map(linkId => {
+          const linkedArt = articlesMap[linkId];
+          const title = linkedArt ? linkedArt.title : linkId;
+          return `<button class="wiki-link-chip" data-wikilink="${linkId}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            <span>${title}</span>
+          </button>`;
+        }).join('');
+      }
+    }
+
+    // Actualizar clase activa en la lista lateral
+    document.querySelectorAll('.wiki-article-item').forEach(item => {
+      item.classList.toggle('active', item.dataset.articleId === article.id);
+    });
+
+    // Añadir escuchadores a los wikilinks inyectados en el cuerpo y en el pie
+    document.querySelectorAll('[data-wikilink]').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = el.getAttribute('data-wikilink');
+        if (articlesMap[targetId]) {
+          displayArticle(targetId);
+          // Scroll suave hacia el reader si estamos en pantalla pequeña
+          if (window.innerWidth <= 992) {
+            const readerEl = document.getElementById('wiki-reader');
+            if (readerEl) readerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      });
+    });
+  }
+
+  // Filtrado reactivo de artículos
+  function filterArticles() {
+    const q = activeSearch.toLowerCase().trim();
+    const cat = activeCategory;
+
+    const filtered = allArticles.filter(art => {
+      const matchCat = (cat === 'all' || art.category === cat);
+      if (!matchCat) return false;
+
+      if (!q) return true;
+
+      const titleMatch = art.title.toLowerCase().includes(q);
+      const descMatch = (art.description || '').toLowerCase().includes(q);
+      const tagsMatch = (art.tags || []).some(t => t.toLowerCase().includes(q));
+      const bodyMatch = (art.body || '').toLowerCase().includes(q);
+
+      return titleMatch || descMatch || tagsMatch || bodyMatch;
+    });
+
+    renderArticlesList(filtered);
+
+    if (resultsIndicator) {
+      resultsIndicator.textContent = `${filtered.length} artículo${filtered.length === 1 ? '' : 's'}`;
+    }
+
+    // Si el seleccionado actual ya no está en los resultados, seleccionar el primero
+    if (filtered.length > 0) {
+      const stillThere = filtered.some(a => a.id === selectedArticleId);
+      if (!stillThere) {
+        displayArticle(filtered[0].id);
+      }
+    }
+  }
+
+  // Renderizar lista en la columna izquierda
+  function renderArticlesList(items) {
+    if (!items.length) {
+      articlesListEl.innerHTML = `
+        <div class="wiki-empty-state">
+          <div class="wiki-empty-icon">🔍</div>
+          <p>No se hallaron artículos para la búsqueda.</p>
+          <button class="wiki-reset-btn" id="wiki-reset-search">Restablecer filtros</button>
+        </div>
+      `;
+      const resetBtn = document.getElementById('wiki-reset-search');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          activeSearch = '';
+          if (searchInput) searchInput.value = '';
+          if (clearBtn) clearBtn.style.display = 'none';
+          activeCategory = 'all';
+          catButtons.forEach(b => b.classList.toggle('active', b.dataset.category === 'all'));
+          filterArticles();
+        });
+      }
+      return;
+    }
+
+    articlesListEl.innerHTML = items.map(art => {
+      const isActive = art.id === selectedArticleId;
+      return `
+        <div class="wiki-article-item ${isActive ? 'active' : ''}" data-article-id="${art.id}">
+          <div class="wiki-item-top">
+            <span class="wiki-item-cat">${art.category}</span>
+            <span class="wiki-item-time">${art.reading_time_min || 3}m</span>
+          </div>
+          <div class="wiki-item-title">${art.title}</div>
+          <div class="wiki-item-desc">${art.description}</div>
+          <div class="wiki-item-tags">
+            ${(art.tags || []).slice(0, 3).map(t => `<span class="wiki-item-tag">#${t}</span>`).join('')}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Eventos de selección de artículo
+    articlesListEl.querySelectorAll('.wiki-article-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const id = item.dataset.articleId;
+        displayArticle(id);
+      });
+    });
+  }
+
+  // Listeners de búsqueda
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      activeSearch = e.target.value;
+      if (clearBtn) clearBtn.style.display = activeSearch ? 'block' : 'none';
+      filterArticles();
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      activeSearch = '';
+      if (searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+      }
+      clearBtn.style.display = 'none';
+      filterArticles();
+    });
+  }
+
+  // Listeners de categorías
+  catButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      catButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCategory = btn.dataset.category;
+      filterArticles();
+    });
+  });
+
+  // Inicializar vista
+  filterArticles();
+  displayArticle(selectedArticleId);
+}
+
+/* --------------------------------------------------------------------------
+   4. GESTOR DE PESTAÑAS DE CÓDIGO
    -------------------------------------------------------------------------- */
 function initCodeTabs() {
   const tabs = document.querySelectorAll('.tab-btn');
@@ -454,7 +756,7 @@ function initParallaxAndTilt() {
    -------------------------------------------------------------------------- */
 function initScrollReveal() {
   const targets = document.querySelectorAll(
-    '.metric-card, .manifesto-quote-card, .kernel-canvas, .kernel-inspector, .mcp-feature-item, .terminal-window, .code-tabs-wrapper, .principle-card, .cta-box'
+    '.metric-card, .manifesto-quote-card, .kernel-canvas, .kernel-inspector, .mcp-feature-item, .terminal-window, .wiki-explorer-card, .code-tabs-wrapper, .principle-card, .cta-box'
   );
 
   targets.forEach((el, index) => {
