@@ -1,0 +1,29 @@
+services:
+  # Servicio para ejecutar tests unitarios y análisis de código estático
+  david-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: david-test
+    volumes:
+      - .:/app
+      - flutter_pub_cache:/root/.pub-cache
+    working_dir: /app
+    command: sh -c "flutter pub get && flutter test"
+
+  # Servidor de previsualización web interactivo de David
+  david-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: david-web
+    volumes:
+      - .:/app
+      - flutter_pub_cache:/root/.pub-cache
+    working_dir: /app
+    ports:
+      - "8085:8080"
+    command: sh -c "flutter pub get && flutter run -d web-server --web-port 8080 --web-hostname 0.0.0.0"
+
+volumes:
+  flutter_pub_cache:
