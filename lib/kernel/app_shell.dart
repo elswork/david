@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../plugins/core/theme/theme_plugin.dart';
 
@@ -102,6 +103,25 @@ class AppShell extends StatelessWidget {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  trailing: Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: Consumer(
+                          builder: (context, ref, _) {
+                            final currentTheme = Theme.of(context);
+                            final isDark = currentTheme.brightness == Brightness.dark;
+                            return IconButton(
+                              tooltip: isDark ? 'Modo Claro (Mármol)' : 'Modo Oscuro (Grafito)',
+                              icon: Icon(isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined),
+                              onPressed: () => ref.read(themeServiceProvider).toggleTheme(),
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   ),
                   destinations: const [

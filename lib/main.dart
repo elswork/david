@@ -57,6 +57,7 @@ void main() async {
   runApp(
     ProviderScope(
       overrides: [
+        themeServiceProvider.overrideWith((ref) => themeService),
         catalogRepositoryProvider.overrideWithValue(catalogRepo),
       ],
       child: DavidApp(

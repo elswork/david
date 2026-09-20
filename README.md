@@ -95,6 +95,22 @@ David no es una aplicación monolítica con pantallas acopladas; es un **Kernel 
 
 ---
 
+## 🖥️ Interfaz Visual y Experiencia de Usuario
+
+David combina velocidad operativa con un diseño refinado basado en la paleta **Mármol, Grafito y Bronce**:
+
+<p align="center">
+  <b>Catálogo de Artículos — Modo Claro (Mármol)</b><br>
+  <img src="./assets/screenshots/catalog_light_mode.png" alt="David - Catálogo Modo Claro" width="95%">
+</p>
+
+<p align="center">
+  <b>Catálogo de Artículos — Modo Oscuro (Grafito)</b><br>
+  <img src="./assets/screenshots/catalog_dark_mode.png" alt="David - Catálogo Modo Oscuro" width="95%">
+</p>
+
+---
+
 ## 🧭 Principios de Desarrollo
 
 - **Pragmatismo sobre Dogma (Anti-Overengineering):** Rechazamos el purismo académico de DDD o Hexagonal de libro que ahoga a los equipos en mappers redundantes y capas intermedias inútiles. Adoptamos una arquitectura *Feature-First* pragmática: un solo modelo inmutable de verdad, repositorios reactivos directos y controladores Riverpod.

@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../kernel/david_context.dart';
 import '../../../kernel/david_plugin.dart';
+
+/// Provider reactivo de Riverpod para ThemeService.
+final themeServiceProvider = ChangeNotifierProvider<ThemeService>((ref) {
+  throw UnimplementedError('themeServiceProvider debe registrarse en ProviderScope');
+});
 
 /// Servicio para la gestión dinámica del tema visual en Proyecto David.
 class ThemeService extends ChangeNotifier {

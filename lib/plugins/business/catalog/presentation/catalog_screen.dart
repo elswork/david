@@ -47,10 +47,16 @@ class CatalogScreen extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            tooltip: 'Cambiar tema (Mármol / Grafito)',
-            icon: const Icon(Icons.brightness_4_outlined),
+            tooltip: theme.brightness == Brightness.dark
+                ? 'Cambiar a modo Claro (Mármol)'
+                : 'Cambiar a modo Oscuro (Grafito)',
+            icon: Icon(
+              theme.brightness == Brightness.dark
+                  ? Icons.light_mode_outlined
+                  : Icons.dark_mode_outlined,
+            ),
             onPressed: () {
-              // El ThemeService se puede invocar desde el contexto
+              ref.read(themeServiceProvider).toggleTheme();
             },
           ),
           IconButton(
